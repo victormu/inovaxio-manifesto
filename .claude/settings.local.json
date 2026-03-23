@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/victorhugoferreira/.claude/plugins/marketplaces/claude-plugins-official/plugins/frontend-design/**)",
+      "Bash(npx skills:*)",
+      "Bash(python3 .claude/skills/ui-ux-pro-max/scripts/search.py \"institutional video storyboard dark glassmorphism cinematic\" --design-system -p \"Inovaxio Storyboard\" -f markdown)",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --yes)",
+      "Read(//private/tmp/**)",
+      "Bash(npx create-next-app@latest inovaxio-storyboard --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --yes)"
+    ]
+  }
+}

@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inovaxio — Design System v1.0</title>
+  <link rel="stylesheet" href="design-system.css" />
+  <style>
+    /* ── Demo-only layout helpers ── */
+    .demo-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px 120px;
+    }
+
+    .demo-header {
+      padding: 80px 48px 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .demo-section {
+      margin-top: 80px;
+    }
+
+    .demo-section-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--color-blue-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .demo-section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--color-separator);
+    }
+
+    .demo-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .demo-grid--2 { grid-template-columns: repeat(2, 1fr); }
+    .demo-grid--3 { grid-template-columns: repeat(3, 1fr); }
+    .demo-grid--4 { grid-template-columns: repeat(4, 1fr); }
+
+    .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .demo-item-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--color-text-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 10px;
+    }
+
+    /* ── Color swatches ── */
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+    }
+
+    .swatch {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .swatch__color {
+      height: 72px;
+      width: 100%;
+    }
+
+    .swatch__info {
+      background: rgba(255,255,255,0.03);
+      padding: 10px 12px;
+    }
+
+    .swatch__name {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--color-text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .swatch__hex {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--color-neutral-light);
+      margin-top: 2px;
+    }
+
+    /* ── Gradient swatches ── */
+    .gradient-swatch {
+      height: 72px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* ── Typography rows ── */
+    .typo-row {
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      display: flex;
+      align-items: baseline;
+      gap: 24px;
+    }
+
+    .typo-row:last-child {
+      border-bottom: none;
+    }
+
+    .typo-row__meta {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--color-text-subtle);
+      width: 120px;
+      flex-shrink: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      line-height: 1.4;
+    }
+
+    .typo-row__sample {
+      flex: 1;
+    }
+
+    /* Sidebar demo — visible even on mobile in the demo */
+    .sidebar-index--demo-visible {
+      display: flex !important;
+    }
+
+    /* Progress bar demo — static */
+    .progress-bar--demo {
+      position: relative;
+      top: auto;
+      left: auto;
+      width: 100%;
+      height: 2px;
+      background: rgba(46, 46, 254, 0.15);
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+    }
+
+    .progress-bar--demo .progress-bar__fill {
+      width: 60%;
+      transition: none;
+    }
+
+    @media (max-width: 768px) {
+      .demo-wrap { padding: 0 20px 80px; }
+      .demo-header { padding: 60px 20px 40px; }
+      .demo-grid--2,
+      .demo-grid--3,
+      .demo-grid--4 { grid-template-columns: 1fr; }
+      .typo-row { flex-direction: column; gap: 8px; }
+      .typo-row__meta { width: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── BARRA DE PROGRESSO (demo estática 60%) ── -->
+  <div class="progress-bar" aria-hidden="true">
+    <div class="progress-bar__fill" style="width: 60%;"></div>
+  </div>
+
+  <!-- ── SIDEBAR INDEX ── -->
+  <nav class="sidebar-index sidebar-index--demo-visible" aria-label="Navegação rápida">
+    <a class="sidebar-index__item active" href="#cores">Cores</a>
+    <a class="sidebar-index__item" href="#tipografia">Tipo</a>
+    <a class="sidebar-index__item" href="#botoes">Botões</a>
+    <a class="sidebar-index__item" href="#cards">Cards</a>
+    <a class="sidebar-index__item" href="#tags">Tags</a>
+    <a class="sidebar-index__item" href="#prompt">Prompt</a>
+    <a class="sidebar-index__item" href="#separadores">Sep.</a>
+    <a class="sidebar-index__item" href="#virada">Virada</a>
+    <a class="sidebar-index__item" href="#progress">Progresso</a>
+  </nav>
+
+  <!-- ── HEADER ── -->
+  <header class="demo-header">
+    <div class="accent-line"></div>
+    <p class="text-label">Inovaxio</p>
+    <h1 class="text-display text-glow" style="margin-top: 12px;">
+      Design System <span class="text-gradient">v1.0</span>
+    </h1>
+    <p class="text-body" style="margin-top: 16px; max-width: 560px; color: var(--color-text-muted);">
+      Arquivo central de identidade visual. Todos os projetos importam este CSS.
+      Nenhuma cor, fonte ou efeito deve ser hardcoded — tudo vem daqui.
+    </p>
+    <div class="demo-row" style="margin-top: 24px;">
+      <span class="scene-tag">&#9679; design-system.css</span>
+      <span class="time-tag">v1.0 · 2026</span>
+    </div>
+  </header>
+
+  <main class="demo-wrap">
+
+    <!-- ══════════════════════════════════
+         1. PALETA DE CORES
+         ══════════════════════════════════ -->
+    <section class="demo-section" id="cores">
+      <div class="demo-section-label">01 — Paleta de Cores</div>
+
+      <p class="text-label" style="margin-bottom: 16px;">Cores sólidas</p>
+      <div class="swatch-grid">
+        <div class="swatch">
+          <div class="swatch__color" style="background: #2E2EFE;"></div>
+          <div class="swatch__info">
+            <div class="swatch__name">Blue Primary</div>
+            <div class="swatch__hex">#2E2EFE</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #3245FD;"></div>
+          <div class="swatch__info">
+            <div class="swatch__name">Blue Secondary</div>
+            <div class="swatch__hex">#3245FD</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #5B2DE8;"></div>
+          <div class="swatch__info">
+            <div class="swatch__name">Purple Accent</div>
+            <div class="swatch__hex">#5B2DE8</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #231F20;"></div>
+          <div class="swatch__info">
+            <div class="swatch__name">Dark Base</div>
+            <div class="swatch__hex">#231F20</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #E6E7E8;"></div>
+          <div class="swatch__info">
+            <div class="swatch__name">Neutral Light</div>
+            <div class="swatch__hex">#E6E7E8</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #000000; border-bottom: 1px solid rgba(255,255,255,0.06);"></div>
+          <div class="swatch__info">
+            <div class="swatch__name">Black</div>
+            <div class="swatch__hex">#000000</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #6B7280;"></div>
+          <div class="swatch__info">
+            <div class="swatch__name">Text Meta</div>
+            <div class="swatch__hex">#6B7280</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="text-label" style="margin-top: 40px; margin-bottom: 16px;">Cores com opacidade</p>
+      <div class="swatch-grid">
+        <div class="swatch">
+          <div class="swatch__color" style="background: rgba(46,46,254,0.3); border-bottom: 1px solid rgba(255,255,255,0.06);"></div>
+          <div class="swatch__info">
+            <div class="swatch__name">Blue Border</div>
+            <div class="swatch__hex">rgba(46,46,254,.3)</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: rgba(46,46,254,0.12); border-bottom: 1px solid rgba(255,255,255,0.06);"></div>
+          <div class="swatch__info">
+            <div class="swatch__name">Blue Glow Soft</div>
+            <div class="swatch__hex">rgba(46,46,254,.12)</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: rgba(46,46,254,0.45); border-bottom: 1px solid rgba(255,255,255,0.06);"></div>
+          <div class="swatch__info">
+            <div class="swatch__name">Blue Glow Mid</div>
+            <div class="swatch__hex">rgba(46,46,254,.45)</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.06);"></div>
+          <div class="swatch__info">
+            <div class="swatch__name">Surface Card</div>
+            <div class="swatch__hex">rgba(255,255,255,.04)</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: rgba(35,31,32,0.85); border-bottom: 1px solid rgba(255,255,255,0.06);"></div>
+          <div class="swatch__info">
+            <div class="swatch__name">Overlay Dark</div>
+            <div class="swatch__hex">rgba(35,31,32,.85)</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: rgba(46,46,254,0.2); border-bottom: 1px solid rgba(255,255,255,0.06);"></div>
+          <div class="swatch__info">
+            <div class="swatch__name">Separator</div>
+            <div class="swatch__hex">rgba(46,46,254,.2)</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="text-label" style="margin-top: 40px; margin-bottom: 16px;">Gradientes</p>
+      <div class="demo-grid demo-grid--3" style="gap: 16px;">
+        <div>
+          <div class="gradient-swatch" style="background: linear-gradient(135deg, #2E2EFE, #3245FD);"></div>
+          <div class="demo-item-label">gradient-primary</div>
+        </div>
+        <div>
+          <div class="gradient-swatch" style="background: linear-gradient(135deg, #2E2EFE, #5B2DE8);"></div>
+          <div class="demo-item-label">gradient-virada</div>
+        </div>
+        <div>
+          <div class="gradient-swatch" style="background: linear-gradient(90deg, #6366ff, #5555f0, #4a4cc8, #3b3d8e);"></div>
+          <div class="demo-item-label">gradient-text</div>
+        </div>
+        <div>
+          <div class="gradient-swatch" style="background: radial-gradient(ellipse at 30% 70%, rgba(46,46,254,0.15) 0%, #231F20 60%);"></div>
+          <div class="demo-item-label">gradient-dark-bg</div>
+        </div>
+        <div>
+          <div class="gradient-swatch" style="background: linear-gradient(90deg, #2E2EFE, #5B2DE8);"></div>
+          <div class="demo-item-label">gradient-progress</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         2. TIPOGRAFIA
+         ══════════════════════════════════ -->
+    <section class="demo-section" id="tipografia">
+      <div class="demo-section-label">02 — Tipografia</div>
+
+      <div class="card" style="padding: 40px;">
+        <div class="typo-row">
+          <div class="typo-row__meta">.text-display<br/>Quicksand 700<br/>48px / lh 1.1</div>
+          <div class="typo-row__sample">
+            <span class="text-display">Inovaxio</span>
+          </div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-row__meta">.text-h1<br/>Quicksand 700<br/>36px</div>
+          <div class="typo-row__sample">
+            <span class="text-h1">Transformação Digital</span>
+          </div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-row__meta">.text-h2<br/>Quicksand 700<br/>24px</div>
+          <div class="typo-row__sample">
+            <span class="text-h2">Design System Completo</span>
+          </div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-row__meta">.text-h3<br/>Quicksand 500<br/>18px</div>
+          <div class="typo-row__sample">
+            <span class="text-h3">Componentes reutilizáveis</span>
+          </div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-row__meta">.text-body<br/>Inter 400<br/>15px / lh 1.8</div>
+          <div class="typo-row__sample">
+            <span class="text-body">Este é o estilo padrão de corpo de texto, usado em parágrafos descritivos e conteúdo principal da plataforma.</span>
+          </div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-row__meta">.text-narration<br/>Inter 400 italic<br/>15px / lh 1.9</div>
+          <div class="typo-row__sample">
+            <span class="text-narration">Era uma vez um produto que precisava de uma identidade forte e consistente em todos os seus projetos.</span>
+          </div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-row__meta">.text-description<br/>Inter 400<br/>13px / lh 1.7</div>
+          <div class="typo-row__sample">
+            <span class="text-description">Texto auxiliar para descrições, subtítulos secundários e informações de suporte ao conteúdo principal.</span>
+          </div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-row__meta">.text-label<br/>Quicksand 500<br/>11px / upper</div>
+          <div class="typo-row__sample">
+            <span class="text-label">Seção ativa — categoria</span>
+          </div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-row__meta">.text-meta<br/>JetBrains Mono<br/>10px</div>
+          <div class="typo-row__sample">
+            <span class="text-meta">00:04:32 · CENA 07 · ATIVO</span>
+          </div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-row__meta">.text-code<br/>JetBrains Mono<br/>12px</div>
+          <div class="typo-row__sample">
+            <span class="text-code">const inovaxio = new DesignSystem({ version: '1.0' });</span>
+          </div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-row__meta">.text-scene-tag<br/>JetBrains Mono 500<br/>11px</div>
+          <div class="typo-row__sample">
+            <span class="text-scene-tag">CENA_07 · PRINCIPAL</span>
+          </div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-row__meta">.text-gradient<br/>gradient-text</div>
+          <div class="typo-row__sample">
+            <span class="text-h1 text-gradient">Gradiente no Texto</span>
+          </div>
+        </div>
+        <div class="typo-row">
+          <div class="typo-row__meta">.text-glow<br/>glow-texto</div>
+          <div class="typo-row__sample">
+            <span class="text-h2 text-glow" style="color:#fff;">Texto com Glow</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         3. BOTÕES
+         ══════════════════════════════════ -->
+    <section class="demo-section" id="botoes">
+      <div class="demo-section-label">03 — Botões</div>
+
+      <div class="demo-row" style="gap: 20px; flex-wrap: wrap; align-items: center;">
+        <div>
+          <button class="btn-cta">Primário</button>
+          <div class="demo-item-label">.btn-cta</div>
+        </div>
+        <div>
+          <button class="btn-cta btn-cta--outline">Outline</button>
+          <div class="demo-item-label">.btn-cta--outline</div>
+        </div>
+        <div>
+          <button class="btn-cta btn-cta--ghost">Ghost</button>
+          <div class="demo-item-label">.btn-cta--ghost</div>
+        </div>
+        <div>
+          <a href="#" class="btn-cta">Link CTA</a>
+          <div class="demo-item-label">&lt;a&gt; .btn-cta</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         4. CARDS & GLASSMORPHISM
+         ══════════════════════════════════ -->
+    <section class="demo-section" id="cards">
+      <div class="demo-section-label">04 — Cards & Glassmorphism</div>
+
+      <div class="demo-grid demo-grid--3">
+        <div>
+          <div class="card">
+            <div class="accent-line"></div>
+            <p class="text-label">Card base</p>
+            <p class="text-body" style="margin-top: 12px;">Glassmorphism com blur e borda neutra. Usado como container padrão.</p>
+          </div>
+          <div class="demo-item-label">.card</div>
+        </div>
+        <div>
+          <div class="card card--blue-border">
+            <div class="accent-line"></div>
+            <p class="text-label">Blue Border</p>
+            <p class="text-body" style="margin-top: 12px;">Destaque com borda azul e glow lateral. Para items em foco.</p>
+          </div>
+          <div class="demo-item-label">.card.card--blue-border</div>
+        </div>
+        <div>
+          <div class="card card--active">
+            <div class="accent-line"></div>
+            <p class="text-label">Ativo</p>
+            <p class="text-body" style="margin-top: 12px;">Estado ativo com borda esquerda e fundo sutil azulado.</p>
+          </div>
+          <div class="demo-item-label">.card.card--active</div>
+        </div>
+      </div>
+
+      <!-- Scene layout demo -->
+      <p class="text-label" style="margin-top: 40px; margin-bottom: 16px;">Scene Layout — duas colunas</p>
+      <div class="scene-layout card" style="padding: 0; gap: 0;">
+        <div style="background: linear-gradient(135deg, rgba(46,46,254,0.15), rgba(91,45,232,0.1)); display: flex; align-items: center; justify-content: center; min-height: 200px; border-radius: var(--radius-lg) 0 0 var(--radius-lg);">
+          <p class="text-meta" style="color: var(--color-text-subtle);">[imagem ou conteúdo visual]</p>
+        </div>
+        <div class="scene-layout__content active" style="border-radius: 0 var(--radius-lg) var(--radius-lg) 0;">
+          <div class="scene-tag" style="margin-bottom: 16px;">&#9679; CENA 07</div>
+          <p class="text-h3">Título da Cena</p>
+          <p class="text-description" style="margin-top: 8px;">Narração ou descrição da cena atual, usando .text-description para hierarquia secundária.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         5. TAGS DE CENA E TEMPO
+         ══════════════════════════════════ -->
+    <section class="demo-section" id="tags">
+      <div class="demo-section-label">05 — Tags de Cena e Tempo</div>
+
+      <div class="demo-row" style="gap: 16px; flex-wrap: wrap; align-items: center;">
+        <div>
+          <div class="scene-tag">&#9679; CENA 01</div>
+          <div class="demo-item-label">.scene-tag</div>
+        </div>
+        <div>
+          <div class="scene-tag">&#9632; GRAVANDO</div>
+          <div class="demo-item-label">.scene-tag</div>
+        </div>
+        <div>
+          <div class="scene-tag">&#9670; PRINCIPAL</div>
+          <div class="demo-item-label">.scene-tag</div>
+        </div>
+        <div>
+          <span class="time-tag">00:04:32</span>
+          <div class="demo-item-label">.time-tag</div>
+        </div>
+        <div>
+          <span class="time-tag">12 MAR 2026 · 21:00</span>
+          <div class="demo-item-label">.time-tag</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         6. PROMPT BLOCK
+         ══════════════════════════════════ -->
+    <section class="demo-section" id="prompt">
+      <div class="demo-section-label">06 — Prompt Block</div>
+
+      <div class="demo-grid demo-grid--2">
+        <!-- Fechado -->
+        <div class="card">
+          <p class="text-h3">Fechado (padrão)</p>
+          <div class="prompt-block">
+            <div class="prompt-block__label" onclick="togglePrompt(this)">
+              Ver prompt original
+            </div>
+            <div class="prompt-block__content">
+              <p class="prompt-block__text">Crie um design system completo com variáveis CSS globais, componentes de glassmorphism, tipografia hierárquica e sistema de cores coerente para a Inovaxio.</p>
+            </div>
+          </div>
+          <div class="demo-item-label" style="margin-top: 12px;">.prompt-block (fechado)</div>
+        </div>
+
+        <!-- Aberto -->
+        <div class="card">
+          <p class="text-h3">Aberto</p>
+          <div class="prompt-block">
+            <div class="prompt-block__label open" onclick="togglePrompt(this)">
+              Ver prompt original
+            </div>
+            <div class="prompt-block__content open">
+              <p class="prompt-block__text">Crie um design system completo com variáveis CSS globais, componentes de glassmorphism, tipografia hierárquica e sistema de cores coerente para a Inovaxio. Todos os projetos futuros vão importar esse CSS.</p>
+            </div>
+          </div>
+          <div class="demo-item-label" style="margin-top: 12px;">.prompt-block (aberto)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         7. SEPARADORES E ACCENT LINES
+         ══════════════════════════════════ -->
+    <section class="demo-section" id="separadores">
+      <div class="demo-section-label">07 — Separadores & Accent Lines</div>
+
+      <div class="card" style="display: flex; flex-direction: column; gap: 32px;">
+        <div>
+          <div class="accent-line"></div>
+          <p class="text-label">Accent Line</p>
+          <p class="text-description" style="margin-top: 4px;">.accent-line — 40px × 1px, azul com glow</p>
+        </div>
+
+        <div>
+          <p class="text-h3">Conteúdo acima</p>
+          <hr class="divider" />
+          <p class="text-description">.divider — separador azul sutil</p>
+        </div>
+
+        <div>
+          <p class="text-h3">Conteúdo acima</p>
+          <hr class="divider divider--subtle" />
+          <p class="text-description">.divider.divider--subtle — branco 6% de opacidade</p>
+        </div>
+
+        <div style="position: relative; padding-right: 80px; overflow: hidden; min-height: 60px;">
+          <p class="text-h3">Número de seção ghostado</p>
+          <div class="section-number">01</div>
+          <p class="demo-item-label" style="margin-top: 4px;">.section-number</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         8. CENA DE VIRADA
+         ══════════════════════════════════ -->
+    <section class="demo-section" id="virada">
+      <div class="demo-section-label">08 — Cena de Virada (Scene Break)</div>
+
+      <div class="scene-break" style="border-radius: var(--radius-lg);">
+        <div class="scene-tag">&#9670; VIRADA</div>
+        <p class="scene-break__text">A TRANSFORMAÇÃO COMEÇA AQUI</p>
+        <p class="scene-break__sub">INOVAXIO · 2026 · CENA DE VIRADA</p>
+        <button class="btn-cta" style="margin-top: 16px;">Continuar</button>
+      </div>
+      <div class="demo-item-label">.scene-break</div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         9. BARRA DE PROGRESSO
+         ══════════════════════════════════ -->
+    <section class="demo-section" id="progress">
+      <div class="demo-section-label">09 — Barra de Progresso</div>
+
+      <div class="card" style="display: flex; flex-direction: column; gap: 24px;">
+        <div>
+          <p class="text-description" style="margin-bottom: 12px;">60% preenchido — estática</p>
+          <div class="progress-bar--demo">
+            <div class="progress-bar__fill" style="width: 60%;"></div>
+          </div>
+          <div class="demo-item-label" style="margin-top: 8px;">.progress-bar__fill [width: 60%]</div>
+        </div>
+
+        <div>
+          <p class="text-description" style="margin-bottom: 12px;">30% preenchido</p>
+          <div class="progress-bar--demo">
+            <div class="progress-bar__fill" style="width: 30%;"></div>
+          </div>
+        </div>
+
+        <div>
+          <p class="text-description" style="margin-bottom: 12px;">90% preenchido</p>
+          <div class="progress-bar--demo">
+            <div class="progress-bar__fill" style="width: 90%;"></div>
+          </div>
+        </div>
+
+        <p class="text-meta">Na produção, a barra fica fixada no topo da página via <code class="text-code">.progress-bar</code> (position: fixed)</p>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════
+         10. SIDEBAR INDEX (demo visual)
+         ══════════════════════════════════ -->
+    <section class="demo-section">
+      <div class="demo-section-label">10 — Sidebar Index</div>
+      <div class="card">
+        <p class="text-description" style="margin-bottom: 24px;">
+          A sidebar fica fixa na lateral esquerda em telas &gt; 1200px. Na demo acima está visível em qualquer resolução.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 12px; padding: 24px; background: rgba(0,0,0,0.3); border-radius: var(--radius-md); width: fit-content;">
+          <a class="sidebar-index__item active" href="#">Cores</a>
+          <a class="sidebar-index__item" href="#">Tipografia</a>
+          <a class="sidebar-index__item" href="#">Botões</a>
+          <a class="sidebar-index__item" href="#">Cards</a>
+          <a class="sidebar-index__item" href="#">Tags</a>
+        </div>
+        <div class="demo-item-label" style="margin-top: 12px;">.sidebar-index / .sidebar-index__item / .active</div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── RODAPÉ ── -->
+  <footer class="site-footer">
+    <p class="site-footer__wordmark">INOVAXIO</p>
+    <p class="site-footer__tagline">Transformando o futuro, um sistema de cada vez.</p>
+    <hr class="divider" style="width: 40px; margin: 0;" />
+    <p class="site-footer__meta">design-system.css · v1.0 · 2026 · Todos os direitos reservados</p>
+  </footer>
+
+  <script>
+    /* Prompt block toggle */
+    function togglePrompt(label) {
+      label.classList.toggle('open');
+      const content = label.nextElementSibling;
+      content.classList.toggle('open');
+    }
+
+    /* Sidebar active state on scroll */
+    const sections = document.querySelectorAll('section[id]');
+    const sidebarItems = document.querySelectorAll('.sidebar-index__item');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          sidebarItems.forEach(item => item.classList.remove('active'));
+          const active = document.querySelector(`.sidebar-index__item[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { threshold: 0.4 });
+
+    sections.forEach(s => observer.observe(s));
+
+    /* Progress bar on scroll (fixed bar at top) */
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = total > 0 ? (scrolled / total) * 100 : 0;
+      const fill = document.querySelector('.progress-bar .progress-bar__fill');
+      if (fill) fill.style.width = pct + '%';
+    });
+  </script>
+</body>
+</html>

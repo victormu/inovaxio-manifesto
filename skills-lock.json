@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "skills": {
+    "breadboarding": {
+      "source": "rjs/shaping-skills",
+      "sourceType": "github",
+      "computedHash": "3462698edf8a72d9651a3c46beba378f7e08cf416b1cbfe6e4649c2460176951"
+    },
+    "code-simplifier": {
+      "source": "rtk-ai/rtk",
+      "sourceType": "github",
+      "computedHash": "5403a4b7e991c33f3181f8aa679c9c138ddac627549811afe442806ae08b0690"
+    },
+    "design-patterns": {
+      "source": "rtk-ai/rtk",
+      "sourceType": "github",
+      "computedHash": "fa4b416df2c2c6f9067875eafe4797e2ffbd07f9ad47ad395fd0b01f1dfed798"
+    },
+    "framing-doc": {
+      "source": "rjs/shaping-skills",
+      "sourceType": "github",
+      "computedHash": "fe527f9d78ca47b675393f6932ae2d5fe175e2f98cc70c42093d5c224bce67b5"
+    },
+    "kickoff-doc": {
+      "source": "rjs/shaping-skills",
+      "sourceType": "github",
+      "computedHash": "3c49ebbed8c5852bd37c4cc682ce0ce0639d407a13df19ab261aa84612271cd2"
+    },
+    "performance": {
+      "source": "rtk-ai/rtk",
+      "sourceType": "github",
+      "computedHash": "405a9abfa1e4b44ae36f969eb2b534dbc5cee8609440b47ada964ad9ed958c47"
+    },
+    "rtk-tdd": {
+      "source": "rtk-ai/rtk",
+      "sourceType": "github",
+      "computedHash": "6f451a9b7808e105c1681e25f656ad26ae7592de177cc267aa9a0981531f24fd"
+    },
+    "shaping": {
+      "source": "rjs/shaping-skills",
+      "sourceType": "github",
+      "computedHash": "9756afea557c899e0d124b3c912b7a14d28d6bc4c037367d97c67b0ea8b29443"
+    },
+    "tdd-rust": {
+      "source": "rtk-ai/rtk",
+      "sourceType": "github",
+      "computedHash": "330e4de780352ab2bb44d945cc137dd81d16dd3949155b2642553ab0769d4292"
+    },
+    "ui-ux-pro-max": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "github",
+      "computedHash": "0a413bf988d06481f69bb81df2070741c3ba12dd9f1be2706d57f259c905992d"
+    }
+  }
+}

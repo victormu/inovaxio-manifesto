@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inovaxio — Storyboard</title>
+  <link rel="stylesheet" href="design-system.css" />
+  <style>
+    /* ── Layout helpers (storyboard-only) ── */
+    .page-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 60px 0 100px;
+    }
+
+    /* Section blocks */
+    .block {
+      padding: 80px 0 40px;
+    }
+
+    .block__header {
+      position: relative;
+      padding: 60px 0 48px;
+      overflow: hidden;
+    }
+
+    /* Scene card container */
+    .scene-card {
+      margin-bottom: 2px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    /* Image placeholder when image is missing */
+    .scene-img-placeholder {
+      width: 100%;
+      height: 100%;
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(46,46,254,0.08), rgba(91,45,232,0.05));
+      gap: 8px;
+    }
+
+    .scene-img-placeholder__label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--color-text-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .scene-img-placeholder__file {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--color-blue-primary);
+      opacity: 0.5;
+    }
+
+    /* Content spacing inside scene */
+    .scene-content-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      height: 100%;
+    }
+
+    .scene-content-inner .text-h3 {
+      margin-top: 4px;
+    }
+
+    .scene-content-inner .text-body {
+      font-style: italic;
+      color: var(--color-text-muted);
+      border-left: 2px solid var(--color-blue-border);
+      padding-left: 12px;
+      margin: 4px 0;
+    }
+
+    /* Scene break override for storyboard */
+    .scene-break {
+      border-radius: var(--radius-lg);
+      margin-bottom: 2px;
+    }
+
+    .scene-break__tags {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .scene-break__description {
+      margin-top: 16px;
+      max-width: 480px;
+      text-align: center;
+    }
+
+    /* Keyboard hint */
+    .keyboard-hint {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      z-index: 200;
+      background: var(--color-overlay-dark);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius-md);
+      padding: 8px 14px;
+      backdrop-filter: blur(8px);
+    }
+
+    .key-badge {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--color-text-muted);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-sm);
+      padding: 2px 6px;
+    }
+
+    .keyboard-hint__label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--color-text-subtle);
+    }
+
+    /* Counter badge */
+    .scene-counter {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--color-text-muted);
+      background: var(--color-overlay-dark);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius-pill);
+      padding: 6px 16px;
+      backdrop-filter: blur(8px);
+      z-index: 200;
+      letter-spacing: 0.08em;
+    }
+
+    /* Smooth scroll */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Sidebar override — always visible on storyboard */
+    @media (max-width: 1200px) {
+      .sidebar-index {
+        display: flex;
+      }
+      .page-wrap {
+        padding: 0 24px 0 80px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .page-wrap {
+        padding: 0 16px 0 16px;
+      }
+      .sidebar-index {
+        display: none;
+      }
+      .keyboard-hint {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── BARRA DE PROGRESSO ── -->
+  <div class="progress-bar" aria-label="Progresso do storyboard">
+    <div class="progress-bar__fill" id="progress-fill"></div>
+  </div>
+
+  <!-- ── ÍNDICE LATERAL ── -->
+  <nav class="sidebar-index" id="sidebar" aria-label="Índice de cenas">
+    <a class="sidebar-index__item" href="#cena-01" data-scene="0">01</a>
+    <a class="sidebar-index__item" href="#cena-02" data-scene="1">02</a>
+    <a class="sidebar-index__item" href="#cena-03" data-scene="2">03</a>
+    <a class="sidebar-index__item" href="#cena-04" data-scene="3">04</a>
+    <a class="sidebar-index__item" href="#cena-05" data-scene="4">05</a>
+    <a class="sidebar-index__item" href="#cena-06" data-scene="5">06</a>
+    <a class="sidebar-index__item" href="#cena-07" data-scene="6">07</a>
+    <a class="sidebar-index__item" href="#cena-08" data-scene="7">08</a>
+    <a class="sidebar-index__item" href="#cena-09" data-scene="8">09</a>
+    <a class="sidebar-index__item" href="#cena-10" data-scene="9">10</a>
+    <a class="sidebar-index__item" href="#cena-11a" data-scene="10">11A</a>
+    <a class="sidebar-index__item" href="#cena-11b" data-scene="11">11B</a>
+    <a class="sidebar-index__item" href="#cena-11c" data-scene="12">11C</a>
+  </nav>
+
+  <div class="page-wrap">
+
+    <!-- ══════════════════════════════════
+         BLOCO 1 — O PROBLEMA
+         ══════════════════════════════════ -->
+    <div class="block" id="bloco-1">
+      <div class="block__header section-header">
+        <div class="section-number">01</div>
+        <div class="accent-line"></div>
+        <p class="text-label">— O Problema —</p>
+      </div>
+
+      <!-- CENA 01 -->
+      <div class="scene-card" id="cena-01">
+        <div class="scene-layout card" style="padding:0; gap:0; border-radius: var(--radius-lg);">
+          <div class="scene-image-wrapper" style="border-radius: var(--radius-lg) 0 0 var(--radius-lg); aspect-ratio: unset; min-height: 320px;">
+            <img src="CENA_1.png" alt="Cena 01 — O peso da dúvida"
+              onerror="this.parentElement.innerHTML='<div class=\'scene-img-placeholder\'><span class=\'scene-img-placeholder__label\'>Aguardando imagem</span><span class=\'scene-img-placeholder__file\'>CENA_1.png</span></div>'" />
+            <div class="scene-image-wrapper__overlay"></div>
+            <div class="scene-image-wrapper__tag">
+              <span class="scene-tag">&#9679; CENA 01</span>
+            </div>
+            <div class="scene-image-wrapper__time">
+              <span class="time-tag">00s – 06s</span>
+            </div>
+          </div>
+          <div class="scene-layout__content" style="border-radius: 0 var(--radius-lg) var(--radius-lg) 0;">
+            <div class="scene-content-inner">
+              <p class="text-label">O peso da dúvida</p>
+              <h2 class="text-h2">O peso da dúvida</h2>
+              <p class="text-body">"Toda empresa chega em um momento em que percebe que algo precisa mudar."</p>
+              <hr class="divider" />
+              <p class="text-description">Protagonista — mulher, blazer escuro, cabelo loiro — sentada à mesa de vidro, mão no queixo, olhar perdido pela janela. Luz natural fria lateral. Câmera parada. Peso e introspecção.</p>
+              <div class="prompt-block">
+                <div class="prompt-block__label" tabindex="0" role="button" aria-expanded="false">
+                  ↓ prompt de imagem
+                </div>
+                <div class="prompt-block__content">
+                  <p class="prompt-block__text">cinematic portrait, businesswoman sitting at glass desk, hand on chin, thoughtful gaze toward window, natural cold side light, modern office, shallow depth of field, muted cool tones, still camera, film grain</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENA 02 -->
+      <div class="scene-card" id="cena-02">
+        <div class="scene-layout card" style="padding:0; gap:0; border-radius: var(--radius-lg);">
+          <div class="scene-image-wrapper" style="border-radius: var(--radius-lg) 0 0 var(--radius-lg); aspect-ratio: unset; min-height: 320px;">
+            <img src="CENA_2.png" alt="Cena 02 — Processos que não avançam"
+              onerror="this.parentElement.innerHTML='<div class=\'scene-img-placeholder\'><span class=\'scene-img-placeholder__label\'>Aguardando imagem</span><span class=\'scene-img-placeholder__file\'>CENA_2.png</span></div>'" />
+            <div class="scene-image-wrapper__overlay"></div>
+            <div class="scene-image-wrapper__tag">
+              <span class="scene-tag">&#9679; CENA 02</span>
+            </div>
+            <div class="scene-image-wrapper__time">
+              <span class="time-tag">06s – 16s</span>
+            </div>
+          </div>
+          <div class="scene-layout__content" style="border-radius: 0 var(--radius-lg) var(--radius-lg) 0;">
+            <div class="scene-content-inner">
+              <p class="text-label">Processos que não avançam</p>
+              <h2 class="text-h2">Processos que não avançam</h2>
+              <p class="text-body">"Os processos começam a ficar confusos. Informações ficam espalhadas. Tarefas importantes ainda dependem de trabalho manual."</p>
+              <hr class="divider" />
+              <p class="text-description">Protagonista e homem de terno azul escuro em mesa de vidro com documentos espalhados. Ela aponta pro papel, ele de braços cruzados. Tensão silenciosa. Câmera lenta recuando.</p>
+              <div class="prompt-block">
+                <div class="prompt-block__label" tabindex="0" role="button" aria-expanded="false">
+                  ↓ prompt de imagem
+                </div>
+                <div class="prompt-block__content">
+                  <p class="prompt-block__text">two business professionals at glass desk covered in documents, woman pointing at papers, man with arms crossed, tense silent tension, no screens, slow dolly out, cinematic, film grain</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENA 03 -->
+      <div class="scene-card" id="cena-03">
+        <div class="scene-layout card" style="padding:0; gap:0; border-radius: var(--radius-lg);">
+          <div class="scene-image-wrapper" style="border-radius: var(--radius-lg) 0 0 var(--radius-lg); aspect-ratio: unset; min-height: 320px;">
+            <img src="CENA_3.png" alt="Cena 03 — A estrutura que não acompanha"
+              onerror="this.parentElement.innerHTML='<div class=\'scene-img-placeholder\'><span class=\'scene-img-placeholder__label\'>Aguardando imagem</span><span class=\'scene-img-placeholder__file\'>CENA_3.png</span></div>'" />
+            <div class="scene-image-wrapper__overlay"></div>
+            <div class="scene-image-wrapper__tag">
+              <span class="scene-tag">&#9679; CENA 03</span>
+            </div>
+            <div class="scene-image-wrapper__time">
+              <span class="time-tag">16s – 26s</span>
+            </div>
+          </div>
+          <div class="scene-layout__content" style="border-radius: 0 var(--radius-lg) var(--radius-lg) 0;">
+            <div class="scene-content-inner">
+              <p class="text-label">A estrutura que não acompanha</p>
+              <h2 class="text-h2">A estrutura que não acompanha</h2>
+              <p class="text-body">"A operação começa a crescer… mas a estrutura não acompanha."</p>
+              <hr class="divider" />
+              <p class="text-description">Homem jovem com blazer cáqui caminhando por corredor com paredes de vidro carregando pilha de papéis, olhar perdido. Luz quente de teto. Câmera lateral câmera lenta.</p>
+              <div class="prompt-block">
+                <div class="prompt-block__label" tabindex="0" role="button" aria-expanded="false">
+                  ↓ prompt de imagem
+                </div>
+                <div class="prompt-block__content">
+                  <p class="prompt-block__text">young professional walking glass-walled corridor carrying stack of papers, distracted expression, slow lateral tracking shot, warm overhead lighting, no screens, cinematic, film grain</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENA 04 -->
+      <div class="scene-card" id="cena-04">
+        <div class="scene-layout card" style="padding:0; gap:0; border-radius: var(--radius-lg);">
+          <div class="scene-image-wrapper" style="border-radius: var(--radius-lg) 0 0 var(--radius-lg); aspect-ratio: unset; min-height: 320px;">
+            <img src="CENA_4.png" alt="Cena 04 — Trabalhando em volta da tecnologia"
+              onerror="this.parentElement.innerHTML='<div class=\'scene-img-placeholder\'><span class=\'scene-img-placeholder__label\'>Aguardando imagem</span><span class=\'scene-img-placeholder__file\'>CENA_4.png</span></div>'" />
+            <div class="scene-image-wrapper__overlay"></div>
+            <div class="scene-image-wrapper__tag">
+              <span class="scene-tag">&#9679; CENA 04</span>
+            </div>
+            <div class="scene-image-wrapper__time">
+              <span class="time-tag">26s – 34s</span>
+            </div>
+          </div>
+          <div class="scene-layout__content" style="border-radius: 0 var(--radius-lg) var(--radius-lg) 0;">
+            <div class="scene-content-inner">
+              <p class="text-label">Trabalhando em volta da tecnologia</p>
+              <h2 class="text-h2">Trabalhando em volta da tecnologia</h2>
+              <p class="text-body">"A empresa passa a trabalhar em volta da tecnologia. Quando deveria ser o contrário."</p>
+              <hr class="divider" />
+              <p class="text-description">Homem de costas em terno cinza diante de janela panorâmica com cidade brumosa. Mesa vazia ao lado. Isolamento e peso da decisão. Câmera parada.</p>
+              <div class="prompt-block">
+                <div class="prompt-block__label" tabindex="0" role="button" aria-expanded="false">
+                  ↓ prompt de imagem
+                </div>
+                <div class="prompt-block__content">
+                  <p class="prompt-block__text">businessman back to camera, large panoramic window, grey hazy city view, empty table beside, still camera, cold tones, cinematic isolation, film grain</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         BLOCO 2 — A VIRADA
+         ══════════════════════════════════ -->
+    <div class="block" id="bloco-2">
+      <div class="block__header section-header">
+        <div class="section-number">02</div>
+        <div class="accent-line"></div>
+        <p class="text-label">— A Virada —</p>
+      </div>
+
+      <!-- CENA 05 — scene-break -->
+      <div class="scene-card" id="cena-05">
+        <div class="scene-break" style="border-radius: var(--radius-lg); min-height: 360px;">
+          <div class="scene-tag">&#9670; CENA 05</div>
+          <p class="scene-break__text">QUANDO DEVERIA SER O CONTRÁRIO</p>
+          <p class="scene-break__sub">[ virada narrativa ]</p>
+          <div class="scene-break__tags">
+            <span class="time-tag">34s – 38s</span>
+          </div>
+          <p class="text-description scene-break__description">Tela preta com texto espaçado. Pausa dramática. Ruptura narrativa antes da resolução.</p>
+          <div class="prompt-block" style="text-align:left; max-width: 560px;">
+            <div class="prompt-block__label" tabindex="0" role="button" aria-expanded="false">
+              ↓ prompt de imagem
+            </div>
+            <div class="prompt-block__content">
+              <p class="prompt-block__text">[motion graphic — fade in sobre preto puro, Quicksand, letter-spacing amplo, glow azul elétrico, 4 segundos]</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         BLOCO 3 — A SOLUÇÃO
+         ══════════════════════════════════ -->
+    <div class="block" id="bloco-3">
+      <div class="block__header section-header">
+        <div class="section-number">03</div>
+        <div class="accent-line"></div>
+        <p class="text-label">— A Solução —</p>
+      </div>
+
+      <!-- CENA 06 -->
+      <div class="scene-card" id="cena-06">
+        <div class="scene-layout card" style="padding:0; gap:0; border-radius: var(--radius-lg);">
+          <div class="scene-image-wrapper" style="border-radius: var(--radius-lg) 0 0 var(--radius-lg); aspect-ratio: unset; min-height: 320px;">
+            <img src="cena_6.png" alt="Cena 06 — Entendendo antes de construir"
+              onerror="this.parentElement.innerHTML='<div class=\'scene-img-placeholder\'><span class=\'scene-img-placeholder__label\'>Aguardando imagem</span><span class=\'scene-img-placeholder__file\'>cena_6.png</span></div>'" />
+            <div class="scene-image-wrapper__overlay"></div>
+            <div class="scene-image-wrapper__tag">
+              <span class="scene-tag">&#9679; CENA 06</span>
+            </div>
+            <div class="scene-image-wrapper__time">
+              <span class="time-tag">38s – 46s</span>
+            </div>
+          </div>
+          <div class="scene-layout__content" style="border-radius: 0 var(--radius-lg) var(--radius-lg) 0;">
+            <div class="scene-content-inner">
+              <p class="text-label">Entendendo antes de construir</p>
+              <h2 class="text-h2">Entendendo antes de construir</h2>
+              <p class="text-body">"Antes de qualquer desenvolvimento, buscamos entender como a empresa funciona. Como os processos acontecem. Onde estão os gargalos."</p>
+              <hr class="divider" />
+              <p class="text-description">Dois profissionais com caderno de esboços mostrando fluxo à mão. Um explica, o outro sorri interessado. Luz quente natural. Clima leve, sem telas.</p>
+              <div class="prompt-block">
+                <div class="prompt-block__label" tabindex="0" role="button" aria-expanded="false">
+                  ↓ prompt de imagem
+                </div>
+                <div class="prompt-block__content">
+                  <p class="prompt-block__text">two professionals at table, one holding hand-drawn notebook sketch, other leaning in smiling, warm natural light, relaxed collaborative mood, no screens, cinematic shallow focus, film grain</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENA 07 -->
+      <div class="scene-card" id="cena-07">
+        <div class="scene-layout card" style="padding:0; gap:0; border-radius: var(--radius-lg);">
+          <div class="scene-image-wrapper" style="border-radius: var(--radius-lg) 0 0 var(--radius-lg); aspect-ratio: unset; min-height: 320px;">
+            <img src="CENA_7.png" alt="Cena 07 — Visualizar para decidir melhor"
+              onerror="this.parentElement.innerHTML='<div class=\'scene-img-placeholder\'><span class=\'scene-img-placeholder__label\'>Aguardando imagem</span><span class=\'scene-img-placeholder__file\'>CENA_7.png</span></div>'" />
+            <div class="scene-image-wrapper__overlay"></div>
+            <div class="scene-image-wrapper__tag">
+              <span class="scene-tag">&#9679; CENA 07</span>
+            </div>
+            <div class="scene-image-wrapper__time">
+              <span class="time-tag">46s – 54s</span>
+            </div>
+          </div>
+          <div class="scene-layout__content" style="border-radius: 0 var(--radius-lg) var(--radius-lg) 0;">
+            <div class="scene-content-inner">
+              <p class="text-label">Visualizar para decidir melhor</p>
+              <h2 class="text-h2">Visualizar para decidir melhor</h2>
+              <p class="text-body">"Utilizamos protótipos, demonstrações e visualizações para explorar ideias e validar caminhos. Porque visualizar uma solução ajuda a tomar decisões melhores."</p>
+              <hr class="divider" />
+              <p class="text-description">Homem apresentando whiteboard com fluxograma à mão. Mulher ao lado observa. Câmera lenta aproximando. Janela ao fundo.</p>
+              <div class="prompt-block">
+                <div class="prompt-block__label" tabindex="0" role="button" aria-expanded="false">
+                  ↓ prompt de imagem
+                </div>
+                <div class="prompt-block__content">
+                  <p class="prompt-block__text">man presenting hand-drawn flowchart on whiteboard, woman beside watching carefully, slow push-in, natural window light, engaged energy, cinematic, film grain</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENA 08 -->
+      <div class="scene-card" id="cena-08">
+        <div class="scene-layout card" style="padding:0; gap:0; border-radius: var(--radius-lg);">
+          <div class="scene-image-wrapper" style="border-radius: var(--radius-lg) 0 0 var(--radius-lg); aspect-ratio: unset; min-height: 320px;">
+            <img src="CENA_8.png" alt="Cena 08 — O time em ação"
+              onerror="this.parentElement.innerHTML='<div class=\'scene-img-placeholder\'><span class=\'scene-img-placeholder__label\'>Aguardando imagem</span><span class=\'scene-img-placeholder__file\'>CENA_8.png</span></div>'" />
+            <div class="scene-image-wrapper__overlay"></div>
+            <div class="scene-image-wrapper__tag">
+              <span class="scene-tag">&#9679; CENA 08</span>
+            </div>
+            <div class="scene-image-wrapper__time">
+              <span class="time-tag">54s – 62s</span>
+            </div>
+          </div>
+          <div class="scene-layout__content" style="border-radius: 0 var(--radius-lg) var(--radius-lg) 0;">
+            <div class="scene-content-inner">
+              <p class="text-label">O time em ação</p>
+              <h2 class="text-h2">O time em ação</h2>
+              <p class="text-body">"Sistemas. Aplicativos. Automações. Tudo pensado para acompanhar o crescimento do negócio."</p>
+              <hr class="divider" />
+              <p class="text-description">Wide shot de quatro devs em mesa longa. Luz azul fria da cidade ao fundo contrasta com lâmpadas quentes. Plantas, livros, canecas. Produtividade tranquila.</p>
+              <div class="prompt-block">
+                <div class="prompt-block__label" tabindex="0" role="button" aria-expanded="false">
+                  ↓ prompt de imagem
+                </div>
+                <div class="prompt-block__content">
+                  <p class="prompt-block__text">wide shot four developers long shared desk, cold blue city night through windows contrasting warm desk lamps, plants books mugs, calm productive atmosphere, cinematic evening, film grain</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENA 09 -->
+      <div class="scene-card" id="cena-09">
+        <div class="scene-layout card" style="padding:0; gap:0; border-radius: var(--radius-lg);">
+          <div class="scene-image-wrapper" style="border-radius: var(--radius-lg) 0 0 var(--radius-lg); aspect-ratio: unset; min-height: 320px;">
+            <img src="CENA_9.png" alt="Cena 09 — Cada empresa tem sua forma de operar"
+              onerror="this.parentElement.innerHTML='<div class=\'scene-img-placeholder\'><span class=\'scene-img-placeholder__label\'>Aguardando imagem</span><span class=\'scene-img-placeholder__file\'>CENA_9.png</span></div>'" />
+            <div class="scene-image-wrapper__overlay"></div>
+            <div class="scene-image-wrapper__tag">
+              <span class="scene-tag">&#9679; CENA 09</span>
+            </div>
+            <div class="scene-image-wrapper__time">
+              <span class="time-tag">62s – 68s</span>
+            </div>
+          </div>
+          <div class="scene-layout__content" style="border-radius: 0 var(--radius-lg) var(--radius-lg) 0;">
+            <div class="scene-content-inner">
+              <p class="text-label">Cada empresa tem sua forma de operar</p>
+              <h2 class="text-h2">Cada empresa tem sua forma de operar</h2>
+              <p class="text-body">"Porque cada empresa tem sua própria forma de operar."</p>
+              <hr class="divider" />
+              <p class="text-description">Grid 4 takes: mão no mouse + escrevendo no caderno; dev de costas com dev feminina concentrada de frente; dev masculino em close frontal no monitor; dev feminina escrevendo sob abajur.</p>
+              <div class="prompt-block">
+                <div class="prompt-block__label" tabindex="0" role="button" aria-expanded="false">
+                  ↓ prompt de imagem
+                </div>
+                <div class="prompt-block__content">
+                  <p class="prompt-block__text">cinematic 4-panel split: hand on mouse with notebook writing, dev from behind with focused female dev ahead, male dev intense monitor close-up, female dev writing under warm lamp, blue-warm office ambiance</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENA 10 -->
+      <div class="scene-card" id="cena-10">
+        <div class="scene-layout card" style="padding:0; gap:0; border-radius: var(--radius-lg);">
+          <div class="scene-image-wrapper" style="border-radius: var(--radius-lg) 0 0 var(--radius-lg); aspect-ratio: unset; min-height: 320px;">
+            <img src="CENA_10.png" alt="Cena 10 — Quando a tecnologia respeita essa realidade"
+              onerror="this.parentElement.innerHTML='<div class=\'scene-img-placeholder\'><span class=\'scene-img-placeholder__label\'>Aguardando imagem</span><span class=\'scene-img-placeholder__file\'>CENA_10.png</span></div>'" />
+            <div class="scene-image-wrapper__overlay"></div>
+            <div class="scene-image-wrapper__tag">
+              <span class="scene-tag">&#9679; CENA 10</span>
+            </div>
+            <div class="scene-image-wrapper__time">
+              <span class="time-tag">68s – 75s</span>
+            </div>
+          </div>
+          <div class="scene-layout__content" style="border-radius: 0 var(--radius-lg) var(--radius-lg) 0;">
+            <div class="scene-content-inner">
+              <p class="text-label">Quando a tecnologia respeita essa realidade</p>
+              <h2 class="text-h2">Quando a tecnologia respeita essa realidade</h2>
+              <p class="text-body">"E quando a tecnologia respeita essa realidade, ela deixa de ser um obstáculo. E passa a ser parte da estratégia."</p>
+              <hr class="divider" />
+              <p class="text-description">Grid 4 takes: dois devs wide shot, um pegando caneca; close extremo nas mãos digitando no laptop; dev feminina em close foco suave; dev masculino desfocado com planta e livros em bokeh.</p>
+              <div class="prompt-block">
+                <div class="prompt-block__label" tabindex="0" role="button" aria-expanded="false">
+                  ↓ prompt de imagem
+                </div>
+                <div class="prompt-block__content">
+                  <p class="prompt-block__text">cinematic 4-panel: two devs wide one reaching for coffee, extreme close-up hands typing laptop, female dev soft portrait, male dev blurred with plant books bokeh, warm-blue palette</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENA 11-A -->
+      <div class="scene-card" id="cena-11a">
+        <div class="scene-layout card" style="padding:0; gap:0; border-radius: var(--radius-lg);">
+          <div class="scene-image-wrapper" style="border-radius: var(--radius-lg) 0 0 var(--radius-lg); aspect-ratio: unset; min-height: 320px;">
+            <img src="CENA_11_-_1.png" alt="Cena 11A — A notícia chega"
+              onerror="this.parentElement.innerHTML='<div class=\'scene-img-placeholder\'><span class=\'scene-img-placeholder__label\'>Aguardando imagem</span><span class=\'scene-img-placeholder__file\'>CENA_11_-_1.png</span></div>'" />
+            <div class="scene-image-wrapper__overlay"></div>
+            <div class="scene-image-wrapper__tag">
+              <span class="scene-tag">&#9679; CENA 11·A</span>
+            </div>
+            <div class="scene-image-wrapper__time">
+              <span class="time-tag">75s – 80s</span>
+            </div>
+          </div>
+          <div class="scene-layout__content" style="border-radius: 0 var(--radius-lg) var(--radius-lg) 0;">
+            <div class="scene-content-inner">
+              <p class="text-label">A notícia chega</p>
+              <h2 class="text-h2">A notícia chega</h2>
+              <p class="text-body">"E passa a ser parte da estratégia."</p>
+              <hr class="divider" />
+              <p class="text-description">Protagonista do início — mesmo blazer escuro — estendendo o braço pela mesa limpa para pegar o celular. Luz dourada de fim de tarde. Mesa organizada, sem papéis.</p>
+              <div class="prompt-block">
+                <div class="prompt-block__label" tabindex="0" role="button" aria-expanded="false">
+                  ↓ prompt de imagem
+                </div>
+                <div class="prompt-block__content">
+                  <p class="prompt-block__text">businesswoman dark blazer reaching across clean desk for phone, warm golden afternoon light, organized desk, slow motion, cinematic, same character as opening</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENA 11-B -->
+      <div class="scene-card" id="cena-11b">
+        <div class="scene-layout card" style="padding:0; gap:0; border-radius: var(--radius-lg);">
+          <div class="scene-image-wrapper" style="border-radius: var(--radius-lg) 0 0 var(--radius-lg); aspect-ratio: unset; min-height: 320px;">
+            <img src="CENA_11_-_2.png" alt="Cena 11B — O alívio genuíno"
+              onerror="this.parentElement.innerHTML='<div class=\'scene-img-placeholder\'><span class=\'scene-img-placeholder__label\'>Aguardando imagem</span><span class=\'scene-img-placeholder__file\'>CENA_11_-_2.png</span></div>'" />
+            <div class="scene-image-wrapper__overlay"></div>
+            <div class="scene-image-wrapper__tag">
+              <span class="scene-tag">&#9679; CENA 11·B</span>
+            </div>
+            <div class="scene-image-wrapper__time">
+              <span class="time-tag">80s – 85s</span>
+            </div>
+          </div>
+          <div class="scene-layout__content" style="border-radius: 0 var(--radius-lg) var(--radius-lg) 0;">
+            <div class="scene-content-inner">
+              <p class="text-label">O alívio genuíno</p>
+              <h2 class="text-h2">O alívio genuíno</h2>
+              <p class="text-body">"No fim das contas, nosso trabalho não é apenas desenvolver software. É ajudar empresas a transformar desafios operacionais em tecnologia que realmente funciona no dia a dia."</p>
+              <hr class="divider" />
+              <p class="text-description">Close no rosto da protagonista com sorriso genuíno olhando pro celular. Olhos levemente cerrados. Luz quente lateral. Resolução emocional pura.</p>
+              <div class="prompt-block">
+                <div class="prompt-block__label" tabindex="0" role="button" aria-expanded="false">
+                  ↓ prompt de imagem
+                </div>
+                <div class="prompt-block__content">
+                  <p class="prompt-block__text">close-up portrait businesswoman genuine soft smile looking at phone, eyes slightly squinted in relief, warm side light, shallow depth of field, dark background, cinematic, film grain</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENA 11-C -->
+      <div class="scene-card" id="cena-11c">
+        <div class="scene-layout card" style="padding:0; gap:0; border-radius: var(--radius-lg);">
+          <div class="scene-image-wrapper" style="border-radius: var(--radius-lg) 0 0 var(--radius-lg); aspect-ratio: unset; min-height: 320px;">
+            <img src="CENA_11_-_3.png" alt="Cena 11C — Parte da estratégia"
+              onerror="this.parentElement.innerHTML='<div class=\'scene-img-placeholder\'><span class=\'scene-img-placeholder__label\'>Aguardando imagem</span><span class=\'scene-img-placeholder__file\'>CENA_11_-_3.png</span></div>'" />
+            <div class="scene-image-wrapper__overlay"></div>
+            <div class="scene-image-wrapper__tag">
+              <span class="scene-tag">&#9679; CENA 11·C</span>
+            </div>
+            <div class="scene-image-wrapper__time">
+              <span class="time-tag">85s – 95s</span>
+            </div>
+          </div>
+          <div class="scene-layout__content" style="border-radius: 0 var(--radius-lg) var(--radius-lg) 0;">
+            <div class="scene-content-inner">
+              <p class="text-label">Parte da estratégia</p>
+              <h2 class="text-h2">Parte da estratégia</h2>
+              <p class="text-body">"Porque tecnologia só faz sentido quando acompanha a evolução da empresa."</p>
+              <hr class="divider" />
+              <p class="text-description">Protagonista de pé diante da janela panorâmica, vista 3/4, olhando o horizonte com luz dourada de pôr do sol. Postura aberta, mãos relaxadas. Último take antes do logo.</p>
+              <div class="prompt-block">
+                <div class="prompt-block__label" tabindex="0" role="button" aria-expanded="false">
+                  ↓ prompt de imagem
+                </div>
+                <div class="prompt-block__content">
+                  <p class="prompt-block__text">businesswoman panoramic window three-quarter view, golden sunset light, city below, open relaxed posture, cinematic wide shot, lens flare, hopeful resolved mood, film grain</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /bloco-3 -->
+  </div><!-- /page-wrap -->
+
+  <!-- ── RODAPÉ ── -->
+  <footer class="site-footer">
+    <div class="accent-line"></div>
+    <p class="site-footer__wordmark">i/o INOVAXIO</p>
+    <p class="site-footer__tagline">Transformamos ideias em realidade digital.</p>
+    <hr class="divider" style="width: 40px; margin: 0;" />
+    <p class="site-footer__meta">13 cenas · ~95 segundos · Brandbook v2.0</p>
+  </footer>
+
+  <!-- ── KEYBOARD HINT ── -->
+  <div class="keyboard-hint" aria-hidden="true">
+    <span class="key-badge">←↑</span>
+    <span class="keyboard-hint__label">anterior</span>
+    <span style="color: var(--color-separator); font-size: 10px;">|</span>
+    <span class="key-badge">→↓</span>
+    <span class="keyboard-hint__label">próxima</span>
+  </div>
+
+  <!-- ── SCENE COUNTER ── -->
+  <div class="scene-counter" id="scene-counter" aria-live="polite">
+    CENA 01 · 13
+  </div>
+
+  <script>
+    // ── All scene anchors in order ──
+    const SCENE_IDS = [
+      'cena-01','cena-02','cena-03','cena-04',
+      'cena-05',
+      'cena-06','cena-07','cena-08','cena-09',
+      'cena-10','cena-11a','cena-11b','cena-11c'
+    ];
+
+    const SCENE_LABELS = [
+      '01','02','03','04','05','06','07','08','09','10','11A','11B','11C'
+    ];
+
+    let currentSceneIndex = 0;
+
+    // ── Helpers ──
+    function getSceneEl(idx) {
+      return document.getElementById(SCENE_IDS[idx]);
+    }
+
+    function scrollToScene(idx) {
+      const el = getSceneEl(idx);
+      if (!el) return;
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function setActive(idx) {
+      currentSceneIndex = Math.max(0, Math.min(SCENE_IDS.length - 1, idx));
+
+      // Update sidebar
+      document.querySelectorAll('.sidebar-index__item').forEach((item, i) => {
+        item.classList.toggle('active', i === currentSceneIndex);
+      });
+
+      // Update scene content active class
+      document.querySelectorAll('.scene-layout__content').forEach((content, i) => {
+        // Map content index to scene index (scene-break has no scene-layout__content)
+        // scene-break is index 4, so content[0–3] = scenes 0–3, content[4–11] = scenes 5–12
+        const sceneIdx = i < 4 ? i : i + 1;
+        content.classList.toggle('active', sceneIdx === currentSceneIndex);
+      });
+
+      // Update counter
+      const counter = document.getElementById('scene-counter');
+      if (counter) {
+        counter.textContent = `CENA ${SCENE_LABELS[currentSceneIndex]} · ${SCENE_IDS.length}`;
+      }
+
+      // Update progress bar
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const fill = document.getElementById('progress-fill');
+      if (!fill) return;
+      const pct = ((currentSceneIndex) / (SCENE_IDS.length - 1)) * 100;
+      fill.style.width = pct + '%';
+    }
+
+    // ── IntersectionObserver — scene visibility ──
+    const sceneObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const idx = SCENE_IDS.indexOf(entry.target.id);
+          if (idx !== -1) setActive(idx);
+        }
+      });
+    }, { threshold: 0.35, rootMargin: '-10% 0px -10% 0px' });
+
+    SCENE_IDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) sceneObserver.observe(el);
+    });
+
+    // ── Progress bar on scroll (fallback) ──
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      if (total <= 0) return;
+      const pct = (scrolled / total) * 100;
+      const fill = document.getElementById('progress-fill');
+      if (fill) fill.style.width = pct + '%';
+    }, { passive: true });
+
+    // ── Sidebar click — smooth scroll ──
+    document.querySelectorAll('.sidebar-index__item[data-scene]').forEach(item => {
+      item.addEventListener('click', e => {
+        e.preventDefault();
+        const idx = parseInt(item.dataset.scene, 10);
+        scrollToScene(idx);
+        setActive(idx);
+      });
+    });
+
+    // ── Prompt block toggle ──
+    document.querySelectorAll('.prompt-block__label').forEach(label => {
+      function toggle() {
+        const isOpen = label.classList.toggle('open');
+        const content = label.nextElementSibling;
+        if (content) content.classList.toggle('open', isOpen);
+        label.setAttribute('aria-expanded', isOpen);
+        // Swap arrow glyph
+        label.textContent = label.textContent.trim();
+        if (isOpen) {
+          label.textContent = label.textContent.replace('↓', '↑');
+        } else {
+          label.textContent = label.textContent.replace('↑', '↓');
+        }
+      }
+      label.addEventListener('click', toggle);
+      label.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+      });
+    });
+
+    // ── Keyboard navigation ──
+    document.addEventListener('keydown', e => {
+      // Ignore if user is in an input
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        const next = Math.min(currentSceneIndex + 1, SCENE_IDS.length - 1);
+        scrollToScene(next);
+        setActive(next);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        const prev = Math.max(currentSceneIndex - 1, 0);
+        scrollToScene(prev);
+        setActive(prev);
+      }
+    });
+
+    // ── Init ──
+    setActive(0);
+  </script>
+</body>
+</html>
