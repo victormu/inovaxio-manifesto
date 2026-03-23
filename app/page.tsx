@@ -276,9 +276,11 @@ export default function StoryboardPage() {
         }}
       >
         <div className="accent-line mx-auto" />
-        <p className="font-institutional font-bold text-3xl text-white tracking-[0.35em] footer-glow">
-          i/o INOVAXIO
-        </p>
+        <img
+          src="/inovaxio-logo.svg"
+          alt="Inovaxio"
+          className="h-14 w-auto footer-glow opacity-90"
+        />
         <p className="font-digital text-sm italic text-white/35">
           Transformamos ideias em realidade digital.
         </p>
